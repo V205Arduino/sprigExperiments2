@@ -71,19 +71,77 @@ void setup() {
   gfx->setCursor(0, 0);
   gfx->setTextColor(GREEN);
 
-  gfx->println(" ");
+  gfx->println("TITLE - Page 1 of 1");
+  gfx->drawLine(0,10,WIDTH,10,WHITE);
+  gfx->setCursor(0, 12);
   gfx->println("Option 1");
   gfx->println("Option 2");
   gfx->println("Option 3");
   gfx->println("Option 4");
-  gfx->drawLine(0,0,WIDTH,0,WHITE);
-  gfx->drawLine(0,10,WIDTH,10,WHITE);
+  /*
   for (int i = 0; i < HEIGHT; i += 10) {
     gfx->drawLine(0,i,WIDTH,i,WHITE);
     delay(1000);
   }
+  */
+
+  //TODO: black out some of the screen when buttonstuff
+
 }
 
+
+bool lastWButtonState = false;
+bool wButtonState = false;
+bool lastSButtonState = false;
+bool sButtonState = false;
+
+int option = 1;
 void loop() {
-  // put your main code here, to run repeatedly:
+
+  static unsigned long timer = 0;
+  unsigned long interval = 50;
+
+
+  Serial.println("looping, I guess");
+  if (millis() - timer >= interval) {
+    timer = millis();
+    // read the pushbutton input pin:
+    wButtonState = digitalRead(wButtonPin);
+    sButtonState = digitalRead(sButtonPin);
+    if(sButtonState != lastSButtonState){
+      if ((sButtonState == false)&&(option <4)){
+        option++;
+        gfx->fillRect(0, (12*option) , WIDTH, 12+(12*option), BLACK);
+        gfx->print("Optino ");
+        gfx->println(option);
+        gfx->setCursor(0, (10*option));
+        
+        /*
+        gfx->print("Optino ");
+        gfx->println(option);
+        */
+          Serial.println("sbutton 2");
+
+      }
+    }
+    
+    // compare the wButtonState to its previous state
+    if (wButtonState != lastWButtonState) {
+      if ((wButtonState == false) && (option >1)) {
+        option--;
+        gfx->fillRect(0, (12*option) , WIDTH, 12+(12*option), BLACK);
+        gfx->print("Optino ");
+        gfx->println(option);
+        Serial.println("wbutton");
+        gfx->setCursor(0, (10*option));
+        /*
+        gfx->print("Optino ");
+        gfx->println(option);
+        */
+        Serial.println("wbutton");
+      }
+    }
+  }
+  lastWButtonState = wButtonState;
+  lastSButtonState = sButtonState;
 }
