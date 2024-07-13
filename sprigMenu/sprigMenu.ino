@@ -1,13 +1,19 @@
 /*
-  TITLE
+  SprigMenu
+
   By V205
   test
 */
+
+
+
+//TODO: make menu from scratch again, remove all those rect things, maybe use an arrow.
 
 #include <Arduino_GFX_Library.h>
 
 #define WIDTH 160
 #define HEIGHT 128
+
 /*
 pin stuff, can ignore
 GPIO  16 Pin 21 MISO
