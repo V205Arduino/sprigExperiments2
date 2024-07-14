@@ -29,6 +29,14 @@ Arduino_HWSPI(int8_t dc, int8_t cs = GFX_NOT_DEFINED, SPIClass *spi = &SPI, bool
 TODO: get
 */
 
+/*
+5 pixels tall
+12 pixels tall
+working numbers out
+I counted a bit wrong I think
+
+*/
+
 //Arduino_DataBus *bus = new Arduino_HWSPI(16 /* DC */, 5 /* CS */);
 
 Arduino_DataBus *bus = new Arduino_HWSPI(22, 21);
@@ -78,8 +86,10 @@ void setup() {
   gfx->setTextColor(GREEN);
 
   gfx->println("TITLE - Page 1 of 1");
-  gfx->drawLine(0,10,WIDTH,10,WHITE);
+  gfx->drawLine(0, 10, WIDTH, 10, WHITE);
   gfx->setCursor(0, 12);
+  //so the line is at 10, and we start text at 12.
+
   gfx->println("Option 1");
   gfx->println("Option 2");
   gfx->println("Option 3");
@@ -92,7 +102,6 @@ void setup() {
   */
 
   //TODO: black out some of the screen when buttonstuff
-
 }
 
 
@@ -106,45 +115,33 @@ void loop() {
 
   static unsigned long timer = 0;
   unsigned long interval = 50;
+  int optionLocation = (7 * (option-1) ) + 13;
 
-
-  Serial.println("looping, I guess");
+  //Serial.println("looping, I guess");
   if (millis() - timer >= interval) {
+    //Serial.println("interval");
     timer = millis();
     // read the pushbutton input pin:
     wButtonState = digitalRead(wButtonPin);
     sButtonState = digitalRead(sButtonPin);
-    if(sButtonState != lastSButtonState){
-      if ((sButtonState == false)&&(option <4)){
+    if (sButtonState != lastSButtonState) {
+      if ((sButtonState == false) && (option < 4)) {
+        gfx->fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, BLACK);
+        Serial.println("sbutton ");
         option++;
-        gfx->fillRect(0, (12*option) , WIDTH, 12+(12*option), BLACK);
-        gfx->print("Optino ");
-        gfx->println(option);
-        gfx->setCursor(0, (10*option));
-        
-        /*
-        gfx->print("Optino ");
-        gfx->println(option);
-        */
-          Serial.println("sbutton 2");
-
+        optionLocation = (7 * (option-1)) + 13;
+        gfx->fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, (optionLocation) + 2, YELLOW);
       }
     }
-    
+
     // compare the wButtonState to its previous state
     if (wButtonState != lastWButtonState) {
-      if ((wButtonState == false) && (option >1)) {
+      if ((wButtonState == false) && (option > 1)) {
+        gfx->fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, BLACK);
+        Serial.println("wbutton");
         option--;
-        gfx->fillRect(0, (12*option) , WIDTH, 12+(12*option), BLACK);
-        gfx->print("Optino ");
-        gfx->println(option);
-        Serial.println("wbutton");
-        gfx->setCursor(0, (10*option));
-        /*
-        gfx->print("Optino ");
-        gfx->println(option);
-        */
-        Serial.println("wbutton");
+        optionLocation = (7 * (option-1)) + 13;
+        gfx->fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, YELLOW);
       }
     }
   }
