@@ -43,6 +43,7 @@ Arduino_DataBus *bus = new Arduino_HWSPI(22, 21);
 //Arduino_GFX *gfx = new Arduino_ILI9341(bus, 17 /* RST */);
 Arduino_GFX *gfx = new Arduino_ST7735(bus, 26, 3);
 
+
 /*
 
 Arduino_ST7735::Arduino_ST7735(
@@ -94,6 +95,10 @@ void setup() {
   gfx->println("Option 2");
   gfx->println("Option 3");
   gfx->println("Option 4");
+
+  gfx->drawLine(0, 12, WIDTH, 12, WHITE);
+
+  gfx->drawLine(0, 21, WIDTH, 20, WHITE);
   /*
   for (int i = 0; i < HEIGHT; i += 10) {
     gfx->drawLine(0,i,WIDTH,i,WHITE);
@@ -117,7 +122,7 @@ void loop() {
   unsigned long interval = 50;
   int optionLocation = (7 * (option-1) ) + 13;
 
-  //Serial.println("looping, I guess");
+  Serial.println("looping, I guess");
   if (millis() - timer >= interval) {
     //Serial.println("interval");
     timer = millis();
