@@ -50,6 +50,7 @@
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 
 
+/*
 const int wButtonPin = 5;
 const int aButtonPin = 6;
 const int sButtonPin = 7;
@@ -58,12 +59,12 @@ const int iButtonPin = 12;
 const int jButtonPin = 13;
 const int kButtonPin = 14;
 const int lButtonPin = 15;
-
+*/
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.print(F("Hello! ST77xx TFT Test"));
 
-  tft.setRotation(3);
+  /*
   pinMode(wButtonPin, INPUT_PULLUP);
   pinMode(aButtonPin, INPUT_PULLUP);
   pinMode(sButtonPin, INPUT_PULLUP);
@@ -72,11 +73,13 @@ void setup() {
   pinMode(jButtonPin, INPUT_PULLUP);
   pinMode(kButtonPin, INPUT_PULLUP);
   pinMode(lButtonPin, INPUT_PULLUP);
+ 
+*/
   pinMode(17, OUTPUT);
   digitalWrite(17, HIGH);
-
   // Use this initializer if using a 1.8" TFT screen:
   tft.initR(INITR_BLACKTAB);  // Init ST7735S chip, black tab
+  tft.setRotation(3);
 
   //rocket fast sprig, anyone?
 
@@ -85,9 +88,9 @@ void setup() {
   // may end up with a black screen some times, or all the time.
   //tft.setSPISpeed(40000000);
 
-  Serial.println(F("Initialized"));
-
-  tft.fillScreen(ST77XX_YELLOW);
+  Serial.println(F("Initialized.."));
+  
+  tft.fillScreen(ST77XX_BLACK);
   tft.setCursor(0, 0);
   tft.setTextColor(ST77XX_GREEN);
 
@@ -108,14 +111,19 @@ void setup() {
 
 }
 
+
 bool lastWButtonState = false;
 bool wButtonState = false;
 bool lastSButtonState = false;
 bool sButtonState = false;
 
 int option = 1;
+
 void loop() {
 
+
+  Serial.println("I'm still alive");
+  /*
   static unsigned long timer = 0;
   unsigned long interval = 50;
   int optionLocation = (7 * (option-1) ) + 13;
@@ -150,4 +158,5 @@ void loop() {
   }
   lastWButtonState = wButtonState;
   lastSButtonState = sButtonState;
+  */
 }
