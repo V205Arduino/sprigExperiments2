@@ -123,7 +123,7 @@ void loop() {
 
 
   Serial.println("I'm still alive");
-  /*
+  
   static unsigned long timer = 0;
   unsigned long interval = 50;
   int optionLocation = (7 * (option-1) ) + 13;
@@ -158,5 +158,5 @@ void loop() {
   }
   lastWButtonState = wButtonState;
   lastSButtonState = sButtonState;
-  */
+  
 }
