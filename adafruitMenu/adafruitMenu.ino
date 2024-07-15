@@ -50,7 +50,7 @@
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 
 
-/*
+
 const int wButtonPin = 5;
 const int aButtonPin = 6;
 const int sButtonPin = 7;
@@ -59,7 +59,7 @@ const int iButtonPin = 12;
 const int jButtonPin = 13;
 const int kButtonPin = 14;
 const int lButtonPin = 15;
-*/
+
 void setup() {
   Serial.begin(115200);
   Serial.print(F("Hello! ST77xx TFT Test"));
@@ -73,8 +73,15 @@ void setup() {
   pinMode(jButtonPin, INPUT_PULLUP);
   pinMode(kButtonPin, INPUT_PULLUP);
   pinMode(lButtonPin, INPUT_PULLUP);
- 
-*/
+  */
+
+  for (int i = 5; i < 9; i++) {
+    pinMode(i, INPUT_PULLUP);
+  }
+  for (int i = 12; i < 16; i++) {
+    pinMode(i, INPUT_PULLUP);
+  }
+
   pinMode(17, OUTPUT);
   digitalWrite(17, HIGH);
   // Use this initializer if using a 1.8" TFT screen:
@@ -89,7 +96,7 @@ void setup() {
   //tft.setSPISpeed(40000000);
 
   Serial.println(F("Initialized.."));
-  
+
   tft.fillScreen(ST77XX_BLACK);
   tft.setCursor(0, 0);
   tft.setTextColor(ST77XX_GREEN);
@@ -105,10 +112,8 @@ void setup() {
   tft.println("Option 4");
 
   tft.drawLine(0, 12, WIDTH, 12, ST77XX_WHITE);
-  
+
   tft.drawLine(0, 21, WIDTH, 20, ST77XX_WHITE);
-
-
 }
 
 
@@ -123,14 +128,14 @@ void loop() {
 
 
   Serial.println("I'm still alive");
-  
+
   static unsigned long timer = 0;
   unsigned long interval = 50;
-  int optionLocation = (7 * (option-1) ) + 13;
+  int optionLocation = (7 * (option - 1)) + 13;
 
   Serial.println("looping, I guess");
   if (millis() - timer >= interval) {
-    //Serial.println("interval");
+    Serial.println("interval");
     timer = millis();
     // read the pushbutton input pin:
     wButtonState = digitalRead(wButtonPin);
@@ -140,7 +145,7 @@ void loop() {
         tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, ST77XX_BLACK);
         Serial.println("sbutton ");
         option++;
-        optionLocation = (7 * (option-1)) + 13;
+        optionLocation = (7 * (option - 1)) + 13;
         tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, (optionLocation) + 2, ST77XX_YELLOW);
       }
     }
@@ -151,12 +156,11 @@ void loop() {
         tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, ST77XX_BLACK);
         Serial.println("wbutton");
         option--;
-        optionLocation = (7 * (option-1)) + 13;
+        optionLocation = (7 * (option - 1)) + 13;
         tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, ST77XX_YELLOW);
       }
     }
   }
   lastWButtonState = wButtonState;
   lastSButtonState = sButtonState;
-  
 }
