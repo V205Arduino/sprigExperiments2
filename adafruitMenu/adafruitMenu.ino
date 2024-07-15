@@ -1,36 +1,7 @@
-/**************************************************************************
-  This is a library for several Adafruit displays based on ST77* drivers.
+/*
+Experiments with Sprig and Arduino.
+*/
 
-  Works with the Adafruit 1.8" TFT Breakout w/SD card
-    ----> http://www.adafruit.com/products/358
-  The 1.8" TFT shield
-    ----> https://www.adafruit.com/product/802
-  The 1.44" TFT breakout
-    ----> https://www.adafruit.com/product/2088
-  The 1.14" TFT breakout
-  ----> https://www.adafruit.com/product/4383
-  The 1.3" TFT breakout
-  ----> https://www.adafruit.com/product/4313
-  The 1.54" TFT breakout
-    ----> https://www.adafruit.com/product/3787
-  The 1.69" TFT breakout
-    ----> https://www.adafruit.com/product/5206
-  The 2.0" TFT breakout
-    ----> https://www.adafruit.com/product/4311
-  as well as Adafruit raw 1.8" TFT display
-    ----> http://www.adafruit.com/products/618
-
-  Check out the links above for our tutorials and wiring diagrams.
-  These displays use SPI to communicate, 4 or 5 pins are required to
-  interface (RST is optional).
-
-  Adafruit invests time and resources providing this open source code,
-  please support Adafruit and open-source hardware by purchasing
-  products from Adafruit!
-
-  Written by Limor Fried/Ladyada for Adafruit Industries.
-  MIT license, all text above must be included in any redistribution
- **************************************************************************/
 
 #include <Adafruit_GFX.h>     // Core graphics library
 #include <Adafruit_ST7735.h>  // Hardware-specific library for ST7735
@@ -64,7 +35,7 @@ void setup() {
   Serial.begin(115200);
   Serial.print(F("Hello! ST77xx TFT Test"));
 
-  /*
+
   pinMode(wButtonPin, INPUT_PULLUP);
   pinMode(aButtonPin, INPUT_PULLUP);
   pinMode(sButtonPin, INPUT_PULLUP);
@@ -73,15 +44,16 @@ void setup() {
   pinMode(jButtonPin, INPUT_PULLUP);
   pinMode(kButtonPin, INPUT_PULLUP);
   pinMode(lButtonPin, INPUT_PULLUP);
-  */
 
+
+  /*
   for (int i = 5; i < 9; i++) {
     pinMode(i, INPUT_PULLUP);
   }
   for (int i = 12; i < 16; i++) {
     pinMode(i, INPUT_PULLUP);
   }
-
+  */
   pinMode(17, OUTPUT);
   digitalWrite(17, HIGH);
   // Use this initializer if using a 1.8" TFT screen:
@@ -111,9 +83,9 @@ void setup() {
   tft.println("Option 3");
   tft.println("Option 4");
 
-  tft.drawLine(0, 12, WIDTH, 12, ST77XX_WHITE);
+  //tft.drawLine(0, 12, WIDTH, 12, ST77XX_WHITE);
 
-  tft.drawLine(0, 21, WIDTH, 20, ST77XX_WHITE);
+  //tft.drawLine(0, 21, WIDTH, 20, ST77XX_WHITE);
 }
 
 
@@ -127,7 +99,7 @@ int option = 1;
 void loop() {
 
 
-  Serial.println("I'm still alive");
+  Serial.println("I'm still alive,");
 
   static unsigned long timer = 0;
   unsigned long interval = 50;
