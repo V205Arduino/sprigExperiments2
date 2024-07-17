@@ -22,6 +22,11 @@ Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 
 
 
+
+const char *options[] = {
+  "WiFi", "Bluetooth", "Other Tools","Settings"
+};
+
 const int wButtonPin = 5;
 const int aButtonPin = 6;
 const int sButtonPin = 7;
@@ -30,6 +35,9 @@ const int iButtonPin = 12;
 const int jButtonPin = 13;
 const int kButtonPin = 14;
 const int lButtonPin = 15;
+
+
+
 
 void setup() {
   Serial.begin(115200);
@@ -78,14 +86,24 @@ void setup() {
   tft.setCursor(0, 12);
   //so the line is at 10, and we start text at 12.
 
+  /*
   tft.println("Option 1");
+  tft.setCursor(0, 21);
   tft.println("Option 2");
+  tft.setCursor(0, 30);
   tft.println("Option 3");
+  tft.setCursor(0, 39);
   tft.println("Option 4");
+  */
+  for (int i = 0; i < sizeof(options)/sizeof(options[0]); i++) {
+    tft.setCursor(0, 12 +(9*i));
+    tft.println(options[i]);
+
+  }
 
   //tft.drawLine(0, 12, WIDTH, 12, ST77XX_WHITE);
 
-  //tft.drawLine(0, 21, WIDTH, 20, ST77XX_WHITE);
+  tft.drawLine(0, 20, WIDTH, 20, ST77XX_WHITE);
 }
 
 
@@ -103,7 +121,7 @@ void loop() {
 
   static unsigned long timer = 0;
   unsigned long interval = 50;
-  int optionLocation = (7 * (option - 1)) + 13;
+  int optionLocation = (9 *(option-1)) + 12 +2;
 
   Serial.println("looping, I guess");
   if (millis() - timer >= interval) {
@@ -117,7 +135,7 @@ void loop() {
         tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, ST77XX_BLACK);
         Serial.println("sbutton ");
         option++;
-        optionLocation = (7 * (option - 1)) + 13;
+        optionLocation = (9 *(option-1)) + 12 +2;
         tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, (optionLocation) + 2, ST77XX_YELLOW);
       }
     }
@@ -128,7 +146,7 @@ void loop() {
         tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, ST77XX_BLACK);
         Serial.println("wbutton");
         option--;
-        optionLocation = (7 * (option - 1)) + 13;
+        optionLocation = (9 *(option-1)) + 12 +2;
         tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, ST77XX_YELLOW);
       }
     }
