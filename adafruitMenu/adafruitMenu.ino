@@ -75,6 +75,7 @@ void setup() {
   // may end up with a black screen some times, or all the time.
   //tft.setSPISpeed(40000000);
 
+
   Serial.println(F("Initialized.."));
 
   tft.fillScreen(ST77XX_BLACK);
