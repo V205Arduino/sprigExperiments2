@@ -24,8 +24,9 @@ Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 
 
 const char *options[] = {
-  "WiFi", "Bluetooth", "Other Tools","Settings"
+  "WiFi", "Bluetooth", "Other Tools", "Settings", "Device Info", "Shutdown"
 };
+
 
 const int wButtonPin = 5;
 const int aButtonPin = 6;
@@ -37,6 +38,20 @@ const int kButtonPin = 14;
 const int lButtonPin = 15;
 
 
+
+
+bool lastWButtonState = false;
+bool wButtonState = false;
+bool lastSButtonState = false;
+bool sButtonState = false;
+
+bool lastDButtonState = false;
+bool dButtonState = false;
+
+int menuNumber = 1;
+int option = 1;
+
+int optionLocation = (9 * (option - 1)) + 12 + 3;
 
 
 void setup() {
@@ -73,6 +88,8 @@ void setup() {
   // SPI speed defaults to SPI_DEFAULT_FREQ defined in the library, you can override it here
   // Note that speed allowable depends on chip and quality of wiring, if you go too fast, you
   // may end up with a black screen some times, or all the time.
+  //15MHz seems to be max SPI speed of ST7735
+  //maximum SPI data rate of RP2040 is around 62.5 Mbps (62.5 MHz).
   //tft.setSPISpeed(40000000);
 
 
@@ -96,62 +113,65 @@ void setup() {
   tft.setCursor(0, 39);
   tft.println("Option 4");
   */
-  for (int i = 0; i < sizeof(options)/sizeof(options[0]); i++) {
-    tft.setCursor(0, 12 +(9*i));
+  for (int i = 0; i < sizeof(options) / sizeof(options[0]); i++) {
+    tft.setCursor(0, 12 + (9 * i));
     tft.println(options[i]);
-
+    tft.drawLine(0, 20 + (9 * i), WIDTH, 20 + (9 * i), ST77XX_WHITE);
   }
 
   //tft.drawLine(0, 12, WIDTH, 12, ST77XX_WHITE);
-
-  tft.drawLine(0, 20, WIDTH, 20, ST77XX_WHITE);
+  tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, ST77XX_YELLOW);
 }
 
-
-bool lastWButtonState = false;
-bool wButtonState = false;
-bool lastSButtonState = false;
-bool sButtonState = false;
-
-int option = 1;
 
 void loop() {
 
 
-  Serial.println("I'm still alive,");
+  //Serial.println("I'm still alive,");
 
   static unsigned long timer = 0;
   unsigned long interval = 50;
-  int optionLocation = (9 *(option-1)) + 12 +2;
+  optionLocation = (9 * (option - 1)) + 12 + 3;
 
-  Serial.println("looping, I guess");
+  //Serial.println("looping, I guess");
   if (millis() - timer >= interval) {
-    Serial.println("interval");
+    //Serial.println("interval");
     timer = millis();
     // read the pushbutton input pin:
     wButtonState = digitalRead(wButtonPin);
     sButtonState = digitalRead(sButtonPin);
+    dButtonState = digitalReadFast(dButtonPin);
     if (sButtonState != lastSButtonState) {
-      if ((sButtonState == false) && (option < 4)) {
+      if ((sButtonState == false) && (option < sizeof(options) / sizeof(options[0]) && (menuNumber != 0))) {
         tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, ST77XX_BLACK);
         Serial.println("sbutton ");
         option++;
-        optionLocation = (9 *(option-1)) + 12 +2;
+        optionLocation = (9 * (option - 1)) + 12 + 3;
         tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, (optionLocation) + 2, ST77XX_YELLOW);
       }
     }
 
     // compare the wButtonState to its previous state
     if (wButtonState != lastWButtonState) {
-      if ((wButtonState == false) && (option > 1)) {
+      if ((wButtonState == false) && (option > 1) && (menuNumber != 0)) {
         tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, ST77XX_BLACK);
         Serial.println("wbutton");
         option--;
-        optionLocation = (9 *(option-1)) + 12 +2;
+        optionLocation = (9 * (option - 1)) + 12 + 3;
         tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, ST77XX_YELLOW);
+      }
+    }
+    if (dButtonState != lastDButtonState) {
+      if ((dButtonState == false) && (menuNumber != 0)) {
+        tft.fillScreen(ST77XX_BLACK);
+        tft.print("Option ");
+        tft.println(option);
+        menuNumber = 0;
+        serial.println("DDDDD");
       }
     }
   }
   lastWButtonState = wButtonState;
   lastSButtonState = sButtonState;
+  lastDButtonState = dButtonState;
 }
