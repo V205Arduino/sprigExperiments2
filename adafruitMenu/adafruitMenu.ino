@@ -274,58 +274,9 @@ const uint8_t payloads[][31] = {
   { 0x16, 0xff, 0x4c, 0x00, 0x04, 0x04, 0x2a, 0x00, 0x00, 0x00, 0x0f, 0x05, 0xc1, 0x1e, 0x60, 0x4c, 0x95, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00 },
 };
 
-/*
-const uint8_t adv_data[] = {
-  0x1e, 0xff, 0x4c, 0x00, 0x07, 0x19, 0x07, 0x02, 0x20, 0x75, 0xaa, 0x30, 0x01, 0x00, 0x00, 0x45, 0x12, 0x12, 0x12, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-const uint8_t adv_data2[] = {
-  0x1e, 0xff, 0x4c, 0x00, 0x07, 0x19, 0x07, 0x13, 0x20, 0x75, 0xaa, 0x30, 0x01, 0x00, 0x00, 0x45, 0x12, 0x12, 0x12, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-
-*/
 int spamOption = 1;
-/*
-void loop() {
-  BTstack.loop();
-  static unsigned long timer = 0;
-  unsigned long interval = 50;
 
 
-  Serial.println("looping, I guess");
-  if (millis() - timer >= interval) {
-    timer = millis();
-    // read the pushbutton input pin:
-    wButtonState = digitalRead(wButtonPin);
-    sButtonState = digitalRead(sButtonPin);
-    if (sButtonState != lastSButtonState) {
-      if ((sButtonState == false) && (option > 1)) {
-        option--;
-        BTstack.stopAdvertising();
-        Serial.println("s button");
-        Serial.println(option - 1);
-        Serial.println(payloadNames[option - 1]);
-        BTstack.setAdvData(sizeof(payloads[option - 1]), payloads[option - 1]);
-        BTstack.startAdvertising();
-      }
-    }
-
-    // compare the wButtonState to its previous state
-    if (wButtonState != lastWButtonState) {
-      if ((wButtonState == false) && (option < 23)) {
-        option++;
-        BTstack.stopAdvertising();
-        Serial.println(option - 1);
-        Serial.println(payloadNames[option - 1]);
-        BTstack.setAdvData(sizeof(payloads[option - 1]), payloads[option - 1]);
-        BTstack.startAdvertising();
-      }
-    }
-  }
-  lastWButtonState = wButtonState;
-  lastSButtonState = sButtonState;
-}
-
-*/
 
 void bleAttack() {
 
