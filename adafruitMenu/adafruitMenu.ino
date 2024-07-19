@@ -42,9 +42,10 @@ const int lButtonPin = 15;
 
 bool lastWButtonState = false;
 bool wButtonState = false;
+bool lastAButtonState = false;
+bool aButtonState = false;
 bool lastSButtonState = false;
 bool sButtonState = false;
-
 bool lastDButtonState = false;
 bool dButtonState = false;
 
@@ -98,10 +99,18 @@ void setup() {
   tft.fillScreen(ST77XX_BLACK);
   tft.setCursor(0, 0);
   tft.setTextColor(ST77XX_GREEN);
-
   tft.println("TITLE - Page 1 of 1");
+  //tft.drawTriangle(0, 4, 5, 6, 5, 2, ST77XX_YELLOW);
   tft.drawLine(0, 10, WIDTH, 10, ST77XX_WHITE);
   tft.setCursor(0, 12);
+  /*
+  tft.setCursor(10, 0);
+  tft.setTextColor(ST77XX_GREEN);
+  tft.println("TITLE - Page 1 of 1");
+  tft.drawTriangle(0, 4, 5, 6, 5, 2, ST77XX_YELLOW);
+  tft.drawLine(0, 10, WIDTH, 10, ST77XX_WHITE);
+  tft.setCursor(0, 12);
+  */
   //so the line is at 10, and we start text at 12.
 
   /*
@@ -113,6 +122,8 @@ void setup() {
   tft.setCursor(0, 39);
   tft.println("Option 4");
   */
+
+  /*
   for (int i = 0; i < sizeof(options) / sizeof(options[0]); i++) {
     tft.setCursor(0, 12 + (9 * i));
     tft.println(options[i]);
@@ -121,6 +132,9 @@ void setup() {
 
   //tft.drawLine(0, 12, WIDTH, 12, ST77XX_WHITE);
   tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, ST77XX_YELLOW);
+  */
+
+  drawMenu("Test", false, options[]);
 }
 
 
@@ -141,6 +155,16 @@ void loop() {
     wButtonState = digitalRead(wButtonPin);
     sButtonState = digitalRead(sButtonPin);
     dButtonState = digitalReadFast(dButtonPin);
+
+    if (wButtonState != lastWButtonState) {
+      if ((wButtonState == false) && (option > 1) && (menuNumber != 0)) {
+        tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, ST77XX_BLACK);
+        Serial.println("wbutton");
+        option--;
+        optionLocation = (9 * (option - 1)) + 12 + 3;
+        tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, ST77XX_YELLOW);
+      }
+    }
     if (sButtonState != lastSButtonState) {
       if ((sButtonState == false) && (option < sizeof(options) / sizeof(options[0]) && (menuNumber != 0))) {
         tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, ST77XX_BLACK);
@@ -151,27 +175,55 @@ void loop() {
       }
     }
 
-    // compare the wButtonState to its previous state
-    if (wButtonState != lastWButtonState) {
-      if ((wButtonState == false) && (option > 1) && (menuNumber != 0)) {
-        tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, ST77XX_BLACK);
-        Serial.println("wbutton");
-        option--;
-        optionLocation = (9 * (option - 1)) + 12 + 3;
-        tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, ST77XX_YELLOW);
+
+
+    if (aButtonState != lastAButtonState) {
+      if ((aButtonState == false) && (menuNumber = 0)) {
+        tft.fillScreen(ST77XX_BLACK);
+        tft.print("Option ");
+        tft.println(option);
+        menuNumber = 0;
+        Serial.println("DDDDD");
       }
     }
+
     if (dButtonState != lastDButtonState) {
       if ((dButtonState == false) && (menuNumber != 0)) {
         tft.fillScreen(ST77XX_BLACK);
         tft.print("Option ");
         tft.println(option);
         menuNumber = 0;
-        serial.println("DDDDD");
+        Serial.println("DDDDD");
       }
     }
   }
   lastWButtonState = wButtonState;
   lastSButtonState = sButtonState;
   lastDButtonState = dButtonState;
+}
+
+void drawMenu(char TITLE[], bool showBackArrow, char *options[]) {
+
+  tft.fillScreen(ST77XX_BLACK);
+  tft.setCursor(10, 0);
+  tft.setTextColor(ST77XX_GREEN);
+  //tft.println("TITLE - Page 1 of 1");
+  tft.println(TITLE);
+  if (showBackArrow) {
+    tft.drawTriangle(0, 4, 5, 6, 5, 2, ST77XX_YELLOW);
+  }
+  tft.drawLine(0, 10, WIDTH, 10, ST77XX_WHITE);
+  tft.setCursor(0, 12);
+
+
+
+  for (int i = 0; i < sizeof(options[]) / sizeof(options[0]); i++) {
+    tft.setCursor(0, 12 + (9 * i));
+    tft.println(options[i]);
+    tft.drawLine(0, 20 + (9 * i), WIDTH, 20 + (9 * i), ST77XX_WHITE);
+  }
+
+
+  //tft.drawLine(0, 12, WIDTH, 12, ST77XX_WHITE);
+  tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, ST77XX_YELLOW);
 }
