@@ -25,9 +25,9 @@ Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 
 
 const char* options[] = {
-  "WiFi", "Bluetooth", "Other Tools", "Settings", "Device Info", "Shutdown", "another option"
+  "Wii", "Bluetooth", "Other Tools", "Settings", "Device Info", "Shutdown", "another option"
 };
-
+const int optionlength = sizeof(options) / sizeof(options[0]);
 
 
 const int wButtonPin = 5;
@@ -136,7 +136,7 @@ void setup() {
   tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, ST77XX_YELLOW);
   */
 
-  drawMenu("Test", false, options);
+  drawMenu("Test", false);
 }
 
 
@@ -183,7 +183,7 @@ void loop() {
       if ((aButtonState == false) && (menuNumber = 0)) {
         tft.fillScreen(ST77XX_BLACK);
         menuNumber = 1;
-        drawMenu("Aed", false, options);
+        //drawMenu("Aed", false, optionlength ,options);
       }
     }
 
@@ -202,14 +202,18 @@ void loop() {
   lastDButtonState = dButtonState;
   lastAButtonState = aButtonState;
 }
-void drawMenu(const char* title, const bool showBackArrow, const char* options[]) {
+//void drawMenu(const char* title, const bool showBackArrow, int length, const char** options) {
+void drawMenu(const char* title, const bool showBackArrow) {
   tft.fillScreen(ST77XX_BLACK);
-  tft.setCursor(10, 0);
-  tft.setTextColor(ST77XX_GREEN);
-  tft.println(title);
+
+  tft.setCursor(0, 0);
+
   if (showBackArrow) {
     tft.drawTriangle(0, 4, 5, 6, 5, 2, ST77XX_YELLOW);
+    tft.setCursor(10, 0);
   }
+  tft.setTextColor(ST77XX_GREEN);
+  tft.println(title);
   tft.drawLine(0, 10, WIDTH, 10, ST77XX_WHITE);
   tft.setCursor(0, 12);
 
@@ -231,7 +235,7 @@ void drawMenu(const char* title, const bool showBackArrow, const char* options[]
 
 
 
-
+/*
 const char* payloadNames[] = {
   "Airpods", "Airpods Pro", "Airpods Max", "Airpods Gen 2", "Airpods Gen 3",
   "Airpods Pro Gen 2", "PowerBeats", "PowerBeats Pro", "Beats Solo Pro",
@@ -289,3 +293,4 @@ void bleAttack() {
   BTstack.startAdvertising();
 
 }
+*/
