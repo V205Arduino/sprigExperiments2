@@ -21,7 +21,7 @@ struct menu  // declare the struct
 #include <Adafruit_ST7735.h>  // Hardware-specific library for ST7735
 //#include <Adafruit_ST7789.h> // Hardware-specific library for ST7789
 #include <SPI.h>
-#include <BTstackLib.h>
+//#include <BTstackLib.h>
 
 #define TFT_CS 21
 #define TFT_RST 26  // Or set to -1 and connect to Arduino RESET pin
@@ -38,9 +38,9 @@ Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 
 
 int menuNumber = 1;
-int option = 1;
 
-int optionLocation = (9 * (option - 1)) + 12 + 3;
+
+
 
 
 
@@ -54,7 +54,9 @@ public:
   char* options[25];  // Array of pointers to char
   bool showBackArrow;
   int optionCount;  // Added to keep track of the number of options
-
+  int option = 1;
+  int oldOption = option;
+  int optionLocation = (9 * (option - 1)) + 12 + 3;
   void show() {
     tft.fillScreen(ST77XX_BLACK);
 
@@ -79,8 +81,15 @@ public:
   }
 
 
-  void update() {
-
+  void updateOptions() {
+    if (!oldOption == option) {
+      tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, ST77XX_BLACK);
+      Serial.println("sbutton ");
+      option++;
+      optionLocation = (9 * (option - 1)) + 12 + 3;
+      tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, (optionLocation) + 2, ST77XX_YELLOW);
+      oldOption = option;
+    }
   }
 
 
@@ -117,9 +126,8 @@ void setup() {
   Serial.println(F("STARTING " __FILE__ " from " __DATE__ __TIME__));
   tft.initR(INITR_BLACKTAB);  // Init ST7735S chip, black tab
   tft.setRotation(3);
-  mainMenu.title = "test";
-  mainMenu.options = mainOptions;
-  
+  //mainMenu.title = "test";
+  //mainMenu.options = mainOptions;
 }
 
 void loop() {
