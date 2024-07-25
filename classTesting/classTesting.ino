@@ -16,7 +16,7 @@ struct menu  // declare the struct
 };
 */
 
-
+typedef void (*FunctionPointer)();
 #include <Adafruit_GFX.h>     // Core graphics library
 #include <Adafruit_ST7735.h>  // Hardware-specific library for ST7735
 //#include <Adafruit_ST7789.h> // Hardware-specific library for ST7789
@@ -50,6 +50,26 @@ const char* mainOptions[] = {
 
 class Menu {
 public:
+  Menu();
+
+  void addMapping(int number, FunctionPointer function) {
+    if (mappingCount < MAX_MAPPINGS) {
+      numbers[mappingCount] = number;
+      functions[mappingCount] = function;
+      mappingCount++;
+    }
+  }
+
+  void callFunction(int number) {
+    for (int i = 0; i < mappingCount; i++) {
+      if (numbers[i] == number) {
+        functions[i]();
+        return;
+      }
+    }
+    Serial.println("No function mapped to this number");
+  }
+
   char title[13];     // Increased to 13 to accommodate null terminator
   char* options[25];  // Array of pointers to char
   bool showBackArrow;
@@ -85,7 +105,7 @@ public:
     if (!oldOption == option) {
       tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, optionLocation + 2, ST77XX_BLACK);
       Serial.println("sbutton ");
-      option++;
+
       optionLocation = (9 * (option - 1)) + 12 + 3;
       tft.fillTriangle(WIDTH - 3, optionLocation, WIDTH - 7, optionLocation - 2, WIDTH - 7, (optionLocation) + 2, ST77XX_YELLOW);
       oldOption = option;
@@ -93,8 +113,7 @@ public:
   }
 
 
-  Menu() {
-  }
+
 
   /*
     Menu(const char* titleInit, char* optionsInit[], int optionCountInit, bool showBackArrowInit)
@@ -133,3 +152,13 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 }
+
+
+void wifiAnalyzer() {
+}
+
+void bleSpammer() {
+}
+
+
+
